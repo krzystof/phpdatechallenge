@@ -122,7 +122,7 @@ class MyDate
 
     public function diffFromStartOfMonth()
     {
-        echo '+days: ' . $this->day . "\n";
+        // echo '+days: ' . $this->day . "\n";
         return $this->day - 1;
     }
 

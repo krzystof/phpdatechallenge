@@ -102,24 +102,6 @@ class MyDateTest extends PHPUnit_Framework_TestCase
         $this->assertTotalDays('2014/12/31', '2015/01/01');
     }
 
-    /** @group wip */
-    public function testDiff()
-    {
-        $this->markTestIncomplete();
-        $s = '2013/06/15';
-        $e = '2015/03/01';
-        // $d = MyDate::diff($s, $e);
-        $a = $this->dateDiff($s, $e);
-
-        // dd($a);
-
-        $this->assertSame($a->m, $d->months);
-
-        // $diff = MyDate::diff('2013/06/15', '2015/03/01');
-        // $this->assertEquals(21, $diff->months);
-        // $this->assertMonths('2013/06/15', '2015/03/01');
-    }
-
     /*
      * Acceptance tests
      */
@@ -186,15 +168,15 @@ class MyDateTest extends PHPUnit_Framework_TestCase
 
     public function testComplexMonths()
     {
-        $this->markTestIncomplete();
         $this->assertMonths('2013/06/15', '2015/03/01');
     }
 
-    // public function testComplexYears()
-    // {
-    //     $this->markTestIncomplete();
-    //     $this->assertYears('2013/09/13', '2015/07/01');
-    // }
+    /** @group wip */
+    public function testComplexYears()
+    {
+        $this->markTestIncomplete();
+        $this->assertYears('2013/09/13', '2015/07/01');
+    }
 
     // public function testLeapYearTotalDays()
     // {

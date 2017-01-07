@@ -2,6 +2,8 @@
 
 class MyDateDiff
 {
+    const MONTHS_PER_YEAR = 12;
+
     protected $start_date;
     protected $end_date;
 
@@ -40,8 +42,8 @@ class MyDateDiff
 
     private function calculateTotalDaysBetween($start_date, $end_date)
     {
-        echo "\n" . $start_date . ' -> ' . $end_date . "\n";
-        echo "months: " . $this->months . "\n";
+        // echo "\n" . $start_date . ' -> ' . $end_date . "\n";
+        // echo "months: " . $this->months . "\n";
 
         if (! $end_date->isSameYear($start_date)) {
             // echo "not same year \n";
@@ -53,7 +55,7 @@ class MyDateDiff
         }
 
         if (! $end_date->isSameMonth($start_date)) {
-            echo "not same month \n";
+            // echo "not same month \n";
             $this->total_days += $end_date->diffFromStartOfMonth();
             $this->total_days++;
             $this->months++;
@@ -62,20 +64,31 @@ class MyDateDiff
         }
 
         $this->total_days += $end_date->diffInDays($start_date);
-        echo "+ days " . $end_date->diffInDays($start_date);
+        // echo "+ days " . $end_date->diffInDays($start_date);
         // echo $this->total_days . "\n";
             // return $this->calculateTotalDaysBetween($start_date, $end_date->endOfPreviousMonth());
+        $this->convertMonthsToYear();
     }
 
     private function processDiffs()
     {
-        $this->years = $this->end_date->diffInYears($this->start_date);
+        // $this->years = $this->end_date->diffInYears($this->start_date);
         // $this->months = $this->end_date->diffInMonths($this->start_date);
         $this->days = $this->end_date->diffInDays($this->start_date);
     }
 
+    private function convertMonthsToYear()
+    {
+        $this->years = intval($this->months / static::MONTHS_PER_YEAR);
+
+        if ($this->months > static::MONTHS_PER_YEAR) {
+            $this->months = $this->months % static::MONTHS_PER_YEAR - 1;
+        }
+    }
+
     private function toObject()
     {
+        // dd($this);
         return (object) [
             'years' => $this->years,
             'months' => $this->months,
