@@ -13,82 +13,104 @@ class MyDateDiff
     protected $total_days = 0;
     protected $invert = false;
 
+    /**
+     * Instantiate and process the difference
+     * between two dates
+     *
+     * @param MyDate $start_date
+     * @param MyDate $end_date
+     */
     private function __construct($start_date, $end_date)
     {
-        if ($start_date->isAfter($end_date)) {
-            $temp_date = $start_date;
-            $start_date = $end_date;
-            $end_date = $temp_date;
-            $this->invert = true;
-        }
-
         $this->start_date = $start_date;
         $this->end_date = $end_date;
+        $this->initialize();
     }
 
+    /**
+     * Initialize the interval and calculate
+     * the difference between the two dates
+     *
+     * @return void
+     */
+    private function initialize()
+    {
+        $this->swapDatesIfInvert();
+        $this->calculateTotalDaysBetween($this->start_date, $this->end_date);
+        $this->setIntervals();
+    }
+
+    /**
+     * Calculate the difference between the two given dates
+     *
+     * @param  MyDate $start_date
+     * @param  MyDate $end_date
+     * @return object
+     */
     public static function fromDates(MyDate $start_date, MyDate $end_date)
     {
         $diff = new static($start_date, $end_date);
-        $diff->processDates();
-
         return $diff->toObject();
     }
 
-    private function processDates()
+    /**
+     * Swap the two dates on the current instance
+     * if the start date is after the end date
+     *
+     * @return void
+     */
+    private function swapDatesIfInvert()
     {
-        $this->processDiffs();
-        $this->calculateTotalDaysBetween($this->start_date, $this->end_date);
+        if ($this->start_date->isAfter($this->end_date)) {
+            $temp_date = $this->start_date;
+            $this->start_date = $this->end_date;
+            $this->end_date = $temp_date;
+            $this->invert = true;
+        }
     }
 
-    private function calculateTotalDaysBetween($start_date, $end_date)
+    /**
+     * Process the interval between the two given dates
+     *
+     * @param  MyDate $start_date
+     * @param  MyDate $end_date
+     * @return void
+     */
+    private function calculateTotalDaysBetween(MyDate $start_date, MyDate $end_date)
     {
-        // echo "\n" . $start_date . ' -> ' . $end_date . "\n";
-        // echo "months: " . $this->months . "\n";
-
-        if (! $end_date->isSameYear($start_date)) {
-            // echo "not same year \n";
-            $this->total_days += $end_date->diffFromStartOfMonth();
-            $this->total_days++;
+        if (! $end_date->isSameYear($start_date) || ! $end_date->isSameMonth($start_date)) {
+            $this->total_days += $end_date->diffFromPreviousEndOfMonth();
             $this->months++;
-            // echo $this->total_days . "\n";
-            return $this->calculateTotalDaysBetween($start_date, $end_date->endOfPreviousMonth());
-        }
 
-        if (! $end_date->isSameMonth($start_date)) {
-            // echo "not same month \n";
-            $this->total_days += $end_date->diffFromStartOfMonth();
-            $this->total_days++;
-            $this->months++;
-            // echo $this->total_days . "\n";
             return $this->calculateTotalDaysBetween($start_date, $end_date->endOfPreviousMonth());
         }
 
         $this->total_days += $end_date->diffInDays($start_date);
-        // echo "+ days " . $end_date->diffInDays($start_date);
-        // echo $this->total_days . "\n";
-            // return $this->calculateTotalDaysBetween($start_date, $end_date->endOfPreviousMonth());
-        $this->convertMonthsToYear();
     }
 
-    private function processDiffs()
-    {
-        // $this->years = $this->end_date->diffInYears($this->start_date);
-        // $this->months = $this->end_date->diffInMonths($this->start_date);
-        $this->days = $this->end_date->diffInDays($this->start_date);
-    }
-
-    private function convertMonthsToYear()
+    /**
+     * Set the various intervals for the years, months and days
+     *
+     * @return  void
+     */
+    private function setIntervals()
     {
         $this->years = intval($this->months / static::MONTHS_PER_YEAR);
 
         if ($this->months > static::MONTHS_PER_YEAR) {
             $this->months = $this->months % static::MONTHS_PER_YEAR - 1;
         }
+
+        $this->days = $this->end_date->diffInDays($this->start_date);
     }
 
-    private function toObject()
+    /**
+     * Convert the interval to an object
+     *
+     * @return object
+     */
+    protected function toObject()
     {
-        // dd($this);
         return (object) [
             'years' => $this->years,
             'months' => $this->months,

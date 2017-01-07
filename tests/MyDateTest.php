@@ -15,12 +15,12 @@ class MyDateTest extends PHPUnit_Framework_TestCase
 {
     /**
      * ------------------------------------------
-     * My additional tests
+     * Additional tests
      * ------------------------------------------
      *
-     * I use them to drive the implementation and
+     * I used them to drive the implementation and
      * to make sure that I am asserting the same
-     * result as the provided tests.
+     * result as the provided tests
      */
     public function testReturnsDiffAsStandardClass()
     {
@@ -97,7 +97,7 @@ class MyDateTest extends PHPUnit_Framework_TestCase
         $this->assertEquals(new MyDate(2016, 12, 31), $date->endOfPreviousMonth());
     }
 
-    public function testChangeOfYear()
+    public function testTotalDaysBetweenEndOfYearAndBeginningOfNextYear()
     {
         $this->assertTotalDays('2014/12/31', '2015/01/01');
     }
@@ -171,72 +171,60 @@ class MyDateTest extends PHPUnit_Framework_TestCase
         $this->assertMonths('2013/06/15', '2015/03/01');
     }
 
-    /** @group wip */
     public function testComplexYears()
     {
-        $this->markTestIncomplete();
         $this->assertYears('2013/09/13', '2015/07/01');
     }
 
-    // public function testLeapYearTotalDays()
-    // {
-    //     $this->markTestIncomplete();
-    //     $this->assertTotalDays('2013/01/01', '2017/05/15');
-    // }
+    public function testLeapYearTotalDays()
+    {
+        $this->assertTotalDays('2013/01/01', '2017/05/15');
+    }
 
-    // public function testLeapYearDays()
-    // {
-    //     $this->markTestIncomplete();
-    //     $this->assertDays('2013/03/21', '2017/07/31');
-    // }
+    public function testLeapYearDays()
+    {
+        $this->assertDays('2013/03/21', '2017/07/31');
+    }
 
-    // public function testLeapYearMonths()
-    // {
-    //     $this->markTestIncomplete();
-    //     $this->assertMonths('2013/06/15', '2017/03/01');
-    // }
+    public function testLeapYearMonths()
+    {
+        $this->assertMonths('2013/06/15', '2017/03/01');
+    }
 
-    // public function testLeapYearYears()
-    // {
-    //     $this->markTestIncomplete();
-    //     $this->assertYears('2013/09/13', '2017/07/01');
-    // }
+    public function testLeapYearYears()
+    {
+        $this->assertYears('2013/09/13', '2017/07/01');
+    }
 
-    // public function testInvertLeapYearTrue()
-    // {
-    //     $this->markTestIncomplete();
-    //     $this->assertInvert('2017/03/16', '2013/06/18');
-    // }
+    public function testInvertLeapYearTrue()
+    {
+        $this->assertInvert('2017/03/16', '2013/06/18');
+    }
 
-    // public function testMultipleLeapYearTotalDays()
-    // {
-    //     $this->markTestIncomplete();
-    //     $this->assertTotalDays('2013/01/01', '2029/05/15');
-    // }
+    public function testMultipleLeapYearTotalDays()
+    {
+        $this->assertTotalDays('2013/01/01', '2029/05/15');
+    }
 
-    // public function testMultipleLeapYearDays()
-    // {
-    //     $this->markTestIncomplete();
-    //     $this->assertDays('2013/03/21', '2028/07/31');
-    // }
+    public function testMultipleLeapYearDays()
+    {
+        $this->assertDays('2013/03/21', '2028/07/31');
+    }
 
-    // public function testMultipleLeapYearMonths()
-    // {
-    //     $this->markTestIncomplete();
-    //     $this->assertMonths('2013/06/15', '2029/03/01');
-    // }
+    public function testMultipleLeapYearMonths()
+    {
+        $this->assertMonths('2013/06/15', '2029/03/01');
+    }
 
-    // public function testMultipleLeapYearYears()
-    // {
-    //     $this->markTestIncomplete();
-    //     $this->assertYears('2013/09/13', '2029/07/01');
-    // }
+    public function testMultipleLeapYearYears()
+    {
+        $this->assertYears('2013/09/13', '2029/07/01');
+    }
 
-    // public function testInvertMultipleLeapYearTrue()
-    // {
-    //     $this->markTestIncomplete();
-    //     $this->assertInvert('2029/03/16', '2013/06/18');
-    // }
+    public function testInvertMultipleLeapYearTrue()
+    {
+        $this->assertInvert('2029/03/16', '2013/06/18');
+    }
 
     private function assertYears($s, $e)
     {
